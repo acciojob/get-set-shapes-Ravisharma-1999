@@ -1,43 +1,28 @@
-// Rectangle Class
-class Rectangle {
-    constructor(width, height) {
-        this._width = width;
-        this._height = height;
-    }
+describe('Shape Tests', () => {
+    it('calculates area and perimeter correctly', () => {
+        cy.visit(baseUrl + "/main.html");
 
-    // Getter for width
-    get width() {
-        return this._width;
-    }
+        cy.window().then(win => {
+            const Rectangle = win.Rectangle;
+            const Square = win.Square;
 
-    // Getter for height
-    get height() {
-        return this._height;
-    }
+            cy.stub(win.console, "log").as("consoleLog");
 
-    // Method to calculate and return the area of the rectangle
-    getArea() {
-        return this._width * this._height;
-    }
-}
+            const rect_w = 7;
+            const rect_h = 8;
+            const sq_s = 6;
 
-// Square Class (extends Rectangle)
-class Square extends Rectangle {
-    constructor(side) {
-        // Call the parent constructor with side for both width and height
-        super(side, side);
-    }
+            const rectangle = new Rectangle(rect_w, rect_h);
+            const square = new Square(sq_s);
 
-    // Method to calculate and return the perimeter of the square
-    getPerimeter() {
-        return 4 * this.width;  // Since all sides are equal, use width (or height)
-    }
-}
+            expect(rectangle.width).to.equal(rect_w);
+            expect(rectangle.height).to.equal(rect_h);
+            expect(rectangle.getArea()).to.equal(rect_w * rect_h);
 
-// Example usage:
-const rectangle = new Rectangle(5, 10);
-console.log(`Rectangle Area: ${rectangle.getArea()}`); // Should output: 50
-
-const square = new Square(4);
-console.log(`Square Area: ${square.getArea()}`); // Should output: 16
-console.log(`Square Perimeter: ${square.getPerimeter()}`); // Should output: 16
+            expect(square.width).to.equal(sq_s);
+            expect(square.height).to.equal(sq_s);
+            expect(square.getArea()).to.equal(sq_s * sq_s);
+            expect(square.getPerimeter()).to.equal(sq_s * 4);
+        });
+    });
+});
